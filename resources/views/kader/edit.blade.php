@@ -1,57 +1,64 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center">
-            <a href="{{ route('kader.index') }}" class="text-gray-500 hover:text-gray-700 mr-4"><svg class="w-6 h-6"
-                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                </svg></a>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Edit Data Kader</h2>
+        <div class="d-flex align-items-center">
+            <a href="{{ route('kader.index') }}" class="btn btn-outline-secondary me-3"><i
+                    class="bi bi-arrow-left"></i></a>
+            <h4 class="fw-bold text-success mb-0">Edit Data Kader</h4>
         </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl rounded-lg">
-                <form action="{{ route('kader.update', $kader) }}" method="POST" class="p-6 space-y-6">
-                    @csrf @method('PUT')
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div><label for="nama" class="block text-sm font-medium text-gray-700">Nama <span
-                                    class="text-red-500">*</span></label><input type="text" name="nama" id="nama"
-                                value="{{ old('nama', $kader->nama) }}" required
-                                class="mt-1 block w-full rounded-lg border-gray-300"></div>
-                        <div><label for="no_hp" class="block text-sm font-medium text-gray-700">No. HP <span
-                                    class="text-red-500">*</span></label><input type="text" name="no_hp" id="no_hp"
-                                value="{{ old('no_hp', $kader->no_hp) }}" required
-                                class="mt-1 block w-full rounded-lg border-gray-300"></div>
-                        <div><label for="jabatan" class="block text-sm font-medium text-gray-700">Jabatan <span
-                                    class="text-red-500">*</span></label><select name="jabatan" id="jabatan" required
-                                class="mt-1 block w-full rounded-lg border-gray-300">
-                                <option value="">Pilih</option>
-                                @foreach(['Ketua', 'Sekretaris', 'Bendahara', 'Anggota'] as $j)<option value="{{ $j }}"
-                                    {{ old('jabatan', $kader->jabatan) == $j ? 'selected' : '' }}>{{ $j }}</option>
-                                @endforeach
-                            </select></div>
-                        <div><label for="tanggal_bergabung" class="block text-sm font-medium text-gray-700">Tanggal
-                                Bergabung</label><input type="date" name="tanggal_bergabung" id="tanggal_bergabung"
-                                value="{{ old('tanggal_bergabung', $kader->tanggal_bergabung?->format('Y-m-d')) }}"
-                                class="mt-1 block w-full rounded-lg border-gray-300"></div>
-                        <div class="flex items-center"><input type="checkbox" name="aktif" id="aktif" value="1" {{ old('aktif', $kader->aktif) ? 'checked' : '' }}
-                                class="rounded border-gray-300 text-green-600"><label for="aktif"
-                                class="ml-2 text-sm text-gray-700">Status Aktif</label></div>
-                    </div>
-                    <div><label for="alamat" class="block text-sm font-medium text-gray-700">Alamat <span
-                                class="text-red-500">*</span></label><textarea name="alamat" id="alamat" rows="3"
-                            required
-                            class="mt-1 block w-full rounded-lg border-gray-300">{{ old('alamat', $kader->alamat) }}</textarea>
-                    </div>
-                    <div class="flex justify-end gap-4">
-                        <a href="{{ route('kader.index') }}"
-                            class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-6 rounded-lg">Batal</a>
-                        <button type="submit"
-                            class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg">Perbarui</button>
-                    </div>
-                </form>
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-warning text-dark"><i class="bi bi-pencil"></i> Form Edit Kader</div>
+                <div class="card-body">
+                    <form action="{{ route('kader.update', $kader) }}" method="POST">
+                        @csrf @method('PUT')
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="nama" class="form-label">Nama <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="nama" name="nama"
+                                    value="{{ old('nama', $kader->nama) }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="no_hp" class="form-label">No. HP <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="no_hp" name="no_hp"
+                                    value="{{ old('no_hp', $kader->no_hp) }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="jabatan" class="form-label">Jabatan <span
+                                        class="text-danger">*</span></label>
+                                <select class="form-select" id="jabatan" name="jabatan" required>
+                                    @foreach(['Ketua', 'Sekretaris', 'Bendahara', 'Anggota'] as $jab)
+                                        <option value="{{ $jab }}" {{ old('jabatan', $kader->jabatan) == $jab ? 'selected' : '' }}>{{ $jab }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="tanggal_bergabung" class="form-label">Tanggal Bergabung</label>
+                                <input type="date" class="form-control" id="tanggal_bergabung" name="tanggal_bergabung"
+                                    value="{{ old('tanggal_bergabung', $kader->tanggal_bergabung?->format('Y-m-d')) }}">
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="alamat" class="form-label">Alamat <span class="text-danger">*</span></label>
+                                <textarea class="form-control" id="alamat" name="alamat" rows="2"
+                                    required>{{ old('alamat', $kader->alamat) }}</textarea>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="aktif" name="aktif" value="1" {{ old('aktif', $kader->aktif) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="aktif">Aktif</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="{{ route('kader.index') }}" class="btn btn-secondary"><i class="bi bi-x-lg"></i>
+                                Batal</a>
+                            <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i>
+                                Perbarui</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

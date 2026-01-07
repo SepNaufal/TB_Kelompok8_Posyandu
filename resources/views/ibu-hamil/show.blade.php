@@ -1,57 +1,73 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center">
-            <a href="{{ route('ibu-hamil.index') }}" class="text-gray-500 hover:text-gray-700 mr-4">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-            </a>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Detail Ibu Hamil: {{ $ibuHamil->nama }}</h2>
+        <div class="d-flex align-items-center">
+            <a href="{{ route('ibu-hamil.index') }}" class="btn btn-outline-secondary me-3"><i class="bi bi-arrow-left"></i></a>
+            <h4 class="fw-bold mb-0" style="color: #6f42c1;">Detail Ibu Hamil: {{ $ibuHamil->nama }}</h4>
         </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl rounded-lg">
-                <div class="bg-gradient-to-r from-purple-500 to-indigo-500 px-6 py-4 flex justify-between items-center">
-                    <h3 class="text-lg font-semibold text-white">Informasi Ibu Hamil</h3>
-                    <div class="flex gap-2">
-                        <a href="{{ route('ibu-hamil.edit', $ibuHamil) }}" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg text-sm">Edit</a>
-                        <a href="{{ route('catatan.create', ['type' => 'ibu_hamil', 'id' => $ibuHamil->id]) }}" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg text-sm">+ Catatan</a>
-                    </div>
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header text-white d-flex justify-content-between align-items-center" style="background-color: #6f42c1;">
+                    <span><i class="bi bi-person-badge"></i> Informasi Ibu Hamil</span>
+                    <a href="{{ route('ibu-hamil.edit', $ibuHamil) }}" class="btn btn-sm btn-light"><i class="bi bi-pencil"></i> Edit</a>
                 </div>
-                <div class="p-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div><h4 class="text-sm font-medium text-gray-500">Nama</h4><p class="mt-1 text-lg font-semibold text-gray-900">{{ $ibuHamil->nama }}</p></div>
-                        <div><h4 class="text-sm font-medium text-gray-500">Usia</h4><p class="mt-1 text-lg text-gray-900">{{ $ibuHamil->usia }} tahun</p></div>
-                        <div><h4 class="text-sm font-medium text-gray-500">Usia Kehamilan</h4><p class="mt-1"><span class="inline-flex px-3 py-1 text-sm font-medium rounded-full bg-purple-100 text-purple-800">{{ $ibuHamil->usia_kehamilan ?? '-' }} minggu ({{ $ibuHamil->trimester }})</span></p></div>
-                        <div><h4 class="text-sm font-medium text-gray-500">HPL</h4><p class="mt-1 text-lg text-gray-900">{{ $ibuHamil->hpl ? $ibuHamil->hpl->format('d F Y') : '-' }}</p></div>
-                        <div><h4 class="text-sm font-medium text-gray-500">Golongan Darah</h4><p class="mt-1 text-lg text-gray-900">{{ $ibuHamil->golongan_darah ?? '-' }}</p></div>
-                        <div><h4 class="text-sm font-medium text-gray-500">No. HP</h4><p class="mt-1 text-lg text-gray-900">{{ $ibuHamil->no_hp ?? '-' }}</p></div>
-                        <div><h4 class="text-sm font-medium text-gray-500">Nama Suami</h4><p class="mt-1 text-lg text-gray-900">{{ $ibuHamil->nama_suami ?? '-' }}</p></div>
-                        <div class="md:col-span-2"><h4 class="text-sm font-medium text-gray-500">Alamat</h4><p class="mt-1 text-lg text-gray-900">{{ $ibuHamil->alamat }}</p></div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted small">Nama</label>
+                            <p class="fw-bold">{{ $ibuHamil->nama }}</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted small">Usia</label>
+                            <p>{{ $ibuHamil->usia }} tahun</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted small">Usia Kehamilan</label>
+                            <p><span class="badge" style="background-color: #6f42c1;">{{ $ibuHamil->usia_kehamilan ?? '-' }} minggu ({{ $ibuHamil->trimester }})</span></p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted small">HPL</label>
+                            <p>{{ $ibuHamil->hpl ? $ibuHamil->hpl->format('d F Y') : '-' }}</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted small">Golongan Darah</label>
+                            <p>{{ $ibuHamil->golongan_darah ?? '-' }}</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted small">No. HP</label>
+                            <p>{{ $ibuHamil->no_hp ?? '-' }}</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted small">Nama Suami</label>
+                            <p>{{ $ibuHamil->nama_suami ?? '-' }}</p>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label text-muted small">Alamat</label>
+                            <p>{{ $ibuHamil->alamat }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <div class="mt-6 bg-white overflow-hidden shadow-xl rounded-lg">
-                <div class="bg-gradient-to-r from-green-500 to-teal-500 px-6 py-4"><h3 class="text-lg font-semibold text-white">Riwayat Catatan Kesehatan</h3></div>
-                <div class="p-6">
+        </div>
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-journal-medical"></i> Catatan Kesehatan</span>
+                    <a href="{{ route('catatan.create', ['type' => 'ibu_hamil', 'id' => $ibuHamil->id]) }}" class="btn btn-sm btn-light"><i class="bi bi-plus"></i></a>
+                </div>
+                <div class="card-body">
                     @if($ibuHamil->catatanKesehatans->count() > 0)
-                        <div class="space-y-4">
-                            @foreach($ibuHamil->catatanKesehatans->sortByDesc('tanggal') as $catatan)
-                                <div class="border rounded-lg p-4 hover:bg-gray-50">
-                                    <div class="flex justify-between items-start">
-                                        <div class="flex-1">
-                                            <p class="text-sm text-gray-500">{{ $catatan->tanggal->format('d F Y') }}</p>
-                                            <p class="mt-1 font-medium text-gray-900">{{ $catatan->catatan }}</p>
-                                            @if($catatan->tekanan_darah_sistol)<p class="text-sm text-gray-600">Tekanan Darah: {{ $catatan->tekanan_darah }}</p>@endif
-                                        </div>
-                                        <a href="{{ route('catatan.show', $catatan) }}" class="text-blue-600 hover:text-blue-800 text-sm">Detail</a>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
+                        @foreach($ibuHamil->catatanKesehatans->sortByDesc('tanggal')->take(5) as $catatan)
+                            <div class="border-bottom pb-2 mb-2">
+                                <small class="text-muted">{{ $catatan->tanggal->format('d M Y') }}</small>
+                                <p class="mb-1">{{ Str::limit($catatan->catatan, 60) }}</p>
+                                @if($catatan->tekanan_darah_sistol)<small class="text-muted">TD: {{ $catatan->tekanan_darah }}</small>@endif
+                            </div>
+                        @endforeach
                     @else
-                        <div class="text-center py-8 text-gray-500">Belum ada catatan kesehatan</div>
+                        <p class="text-muted text-center mb-0">Belum ada catatan</p>
                     @endif
                 </div>
             </div>

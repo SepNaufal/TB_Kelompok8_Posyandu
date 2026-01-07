@@ -1,54 +1,68 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center">
-            <a href="{{ route('lansia.index') }}" class="text-gray-500 hover:text-gray-700 mr-4"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg></a>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Detail Lansia: {{ $lansia->nama }}</h2>
+        <div class="d-flex align-items-center">
+            <a href="{{ route('lansia.index') }}" class="btn btn-outline-secondary me-3"><i
+                    class="bi bi-arrow-left"></i></a>
+            <h4 class="fw-bold text-warning mb-0">Detail Lansia: {{ $lansia->nama }}</h4>
         </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl rounded-lg">
-                <div class="bg-gradient-to-r from-amber-500 to-orange-500 px-6 py-4 flex justify-between items-center">
-                    <h3 class="text-lg font-semibold text-white">Informasi Lansia</h3>
-                    <div class="flex gap-2">
-                        <a href="{{ route('lansia.edit', $lansia) }}" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg text-sm">Edit</a>
-                        <a href="{{ route('catatan.create', ['type' => 'lansia', 'id' => $lansia->id]) }}" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg text-sm">+ Catatan</a>
-                    </div>
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-person-badge"></i> Informasi Lansia</span>
+                    <a href="{{ route('lansia.edit', $lansia) }}" class="btn btn-sm btn-light"><i
+                            class="bi bi-pencil"></i> Edit</a>
                 </div>
-                <div class="p-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div><h4 class="text-sm font-medium text-gray-500">Nama</h4><p class="mt-1 text-lg font-semibold text-gray-900">{{ $lansia->nama }}</p></div>
-                        <div><h4 class="text-sm font-medium text-gray-500">Usia</h4><p class="mt-1 text-lg text-gray-900">{{ $lansia->usia }} tahun</p></div>
-                        <div><h4 class="text-sm font-medium text-gray-500">Jenis Kelamin</h4><p class="mt-1"><span class="inline-flex px-3 py-1 text-sm font-medium rounded-full {{ $lansia->jenis_kelamin == 'L' ? 'bg-blue-100 text-blue-800' : 'bg-pink-100 text-pink-800' }}">{{ $lansia->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</span></p></div>
-                        <div><h4 class="text-sm font-medium text-gray-500">No. HP</h4><p class="mt-1 text-lg text-gray-900">{{ $lansia->no_hp ?? '-' }}</p></div>
-                        <div><h4 class="text-sm font-medium text-gray-500">Golongan Darah</h4><p class="mt-1 text-lg text-gray-900">{{ $lansia->golongan_darah ?? '-' }}</p></div>
-                        <div class="md:col-span-2"><h4 class="text-sm font-medium text-gray-500">Alamat</h4><p class="mt-1 text-lg text-gray-900">{{ $lansia->alamat }}</p></div>
-                        <div class="md:col-span-2"><h4 class="text-sm font-medium text-gray-500">Riwayat Penyakit</h4><p class="mt-1 text-lg text-gray-900">{{ $lansia->riwayat_penyakit ?? '-' }}</p></div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3"><label class="form-label text-muted small">Nama</label>
+                            <p class="fw-bold">{{ $lansia->nama }}</p>
+                        </div>
+                        <div class="col-md-6 mb-3"><label class="form-label text-muted small">Usia</label>
+                            <p>{{ $lansia->usia }} tahun</p>
+                        </div>
+                        <div class="col-md-6 mb-3"><label class="form-label text-muted small">Jenis Kelamin</label>
+                            <p><span
+                                    class="badge bg-{{ $lansia->jenis_kelamin == 'L' ? 'primary' : 'danger' }}">{{ $lansia->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</span>
+                            </p>
+                        </div>
+                        <div class="col-md-6 mb-3"><label class="form-label text-muted small">No. HP</label>
+                            <p>{{ $lansia->no_hp ?? '-' }}</p>
+                        </div>
+                        <div class="col-md-6 mb-3"><label class="form-label text-muted small">Golongan Darah</label>
+                            <p>{{ $lansia->golongan_darah ?? '-' }}</p>
+                        </div>
+                        <div class="col-12 mb-3"><label class="form-label text-muted small">Alamat</label>
+                            <p>{{ $lansia->alamat }}</p>
+                        </div>
+                        <div class="col-12"><label class="form-label text-muted small">Riwayat Penyakit</label>
+                            <p>{{ $lansia->riwayat_penyakit ?? '-' }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <div class="mt-6 bg-white overflow-hidden shadow-xl rounded-lg">
-                <div class="bg-gradient-to-r from-green-500 to-teal-500 px-6 py-4"><h3 class="text-lg font-semibold text-white">Riwayat Catatan Kesehatan</h3></div>
-                <div class="p-6">
+        </div>
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-journal-medical"></i> Catatan Kesehatan</span>
+                    <a href="{{ route('catatan.create', ['type' => 'lansia', 'id' => $lansia->id]) }}"
+                        class="btn btn-sm btn-light"><i class="bi bi-plus"></i></a>
+                </div>
+                <div class="card-body">
                     @if($lansia->catatanKesehatans->count() > 0)
-                        <div class="space-y-4">
-                            @foreach($lansia->catatanKesehatans->sortByDesc('tanggal') as $catatan)
-                                <div class="border rounded-lg p-4 hover:bg-gray-50">
-                                    <div class="flex justify-between items-start">
-                                        <div class="flex-1">
-                                            <p class="text-sm text-gray-500">{{ $catatan->tanggal->format('d F Y') }}</p>
-                                            <p class="mt-1 font-medium text-gray-900">{{ $catatan->catatan }}</p>
-                                            @if($catatan->tekanan_darah_sistol)<p class="text-sm text-gray-600">Tekanan Darah: {{ $catatan->tekanan_darah }}</p>@endif
-                                        </div>
-                                        <a href="{{ route('catatan.show', $catatan) }}" class="text-blue-600 hover:text-blue-800 text-sm">Detail</a>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
+                        @foreach($lansia->catatanKesehatans->sortByDesc('tanggal')->take(5) as $catatan)
+                            <div class="border-bottom pb-2 mb-2">
+                                <small class="text-muted">{{ $catatan->tanggal->format('d M Y') }}</small>
+                                <p class="mb-1">{{ Str::limit($catatan->catatan, 60) }}</p>
+                                @if($catatan->tekanan_darah_sistol)<small class="text-muted">TD:
+                                {{ $catatan->tekanan_darah }}</small>@endif
+                            </div>
+                        @endforeach
                     @else
-                        <div class="text-center py-8 text-gray-500">Belum ada catatan kesehatan</div>
+                        <p class="text-muted text-center mb-0">Belum ada catatan</p>
                     @endif
                 </div>
             </div>

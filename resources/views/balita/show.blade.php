@@ -1,136 +1,92 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center">
-            <a href="{{ route('balita.index') }}" class="text-gray-500 hover:text-gray-700 mr-4">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                </svg>
+        <div class="d-flex align-items-center">
+            <a href="{{ route('balita.index') }}" class="btn btn-outline-secondary me-3">
+                <i class="bi bi-arrow-left"></i>
             </a>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Detail Balita: {{ $balita->nama }}
-            </h2>
+            <h4 class="fw-bold text-primary mb-0">Detail Balita: {{ $balita->nama }}</h4>
         </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl rounded-lg">
-                <!-- Header with actions -->
-                <div class="bg-gradient-to-r from-pink-500 to-rose-500 px-6 py-4 flex justify-between items-center">
-                    <h3 class="text-lg font-semibold text-white">Informasi Balita</h3>
-                    <div class="flex gap-2">
-                        <a href="{{ route('balita.edit', $balita) }}"
-                            class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg text-sm transition">
-                            Edit
-                        </a>
-                        <a href="{{ route('catatan.create', ['type' => 'balita', 'id' => $balita->id]) }}"
-                            class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg text-sm transition">
-                            + Catatan Kesehatan
-                        </a>
-                    </div>
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Info Balita -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-person-badge"></i> Informasi Balita</span>
+                    <a href="{{ route('balita.edit', $balita) }}" class="btn btn-sm btn-light">
+                        <i class="bi bi-pencil"></i> Edit
+                    </a>
                 </div>
-
-                <div class="p-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <h4 class="text-sm font-medium text-gray-500">Nama Lengkap</h4>
-                            <p class="mt-1 text-lg font-semibold text-gray-900">{{ $balita->nama }}</p>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted small">Nama</label>
+                            <p class="fw-bold">{{ $balita->nama }}</p>
                         </div>
-                        <div>
-                            <h4 class="text-sm font-medium text-gray-500">NIK</h4>
-                            <p class="mt-1 text-lg text-gray-900">{{ $balita->nik ?? '-' }}</p>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted small">Usia</label>
+                            <p class="fw-bold">{{ $balita->usia_lengkap }}</p>
                         </div>
-                        <div>
-                            <h4 class="text-sm font-medium text-gray-500">Tanggal Lahir</h4>
-                            <p class="mt-1 text-lg text-gray-900">{{ $balita->tanggal_lahir->format('d F Y') }}</p>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted small">Tanggal Lahir</label>
+                            <p>{{ $balita->tanggal_lahir->format('d F Y') }}</p>
                         </div>
-                        <div>
-                            <h4 class="text-sm font-medium text-gray-500">Usia</h4>
-                            <p class="mt-1 text-lg text-gray-900">{{ $balita->usia_formatted }}</p>
-                        </div>
-                        <div>
-                            <h4 class="text-sm font-medium text-gray-500">Jenis Kelamin</h4>
-                            <p class="mt-1">
-                                <span
-                                    class="inline-flex px-3 py-1 text-sm font-medium rounded-full {{ $balita->jenis_kelamin == 'L' ? 'bg-blue-100 text-blue-800' : 'bg-pink-100 text-pink-800' }}">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted small">Jenis Kelamin</label>
+                            <p>
+                                <span class="badge bg-{{ $balita->jenis_kelamin == 'L' ? 'primary' : 'danger' }}">
                                     {{ $balita->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}
                                 </span>
                             </p>
                         </div>
-                        <div>
-                            <h4 class="text-sm font-medium text-gray-500">Nama Orang Tua</h4>
-                            <p class="mt-1 text-lg text-gray-900">{{ $balita->nama_ortu }}</p>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted small">Nama Orang Tua</label>
+                            <p>{{ $balita->nama_ortu }}</p>
                         </div>
-                        <div>
-                            <h4 class="text-sm font-medium text-gray-500">Berat Badan</h4>
-                            <p class="mt-1 text-lg text-gray-900">
-                                {{ $balita->berat_badan ? $balita->berat_badan . ' kg' : '-' }}</p>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted small">NIK</label>
+                            <p>{{ $balita->nik ?? '-' }}</p>
                         </div>
-                        <div>
-                            <h4 class="text-sm font-medium text-gray-500">Tinggi Badan</h4>
-                            <p class="mt-1 text-lg text-gray-900">
-                                {{ $balita->tinggi_badan ? $balita->tinggi_badan . ' cm' : '-' }}</p>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted small">Berat Badan</label>
+                            <p>{{ $balita->berat_badan ?? '-' }} kg</p>
                         </div>
-                        <div class="md:col-span-2">
-                            <h4 class="text-sm font-medium text-gray-500">Alamat</h4>
-                            <p class="mt-1 text-lg text-gray-900">{{ $balita->alamat }}</p>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted small">Tinggi Badan</label>
+                            <p>{{ $balita->tinggi_badan ?? '-' }} cm</p>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label text-muted small">Alamat</label>
+                            <p>{{ $balita->alamat }}</p>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
+        <div class="col-lg-4">
             <!-- Catatan Kesehatan -->
-            <div class="mt-6 bg-white overflow-hidden shadow-xl rounded-lg">
-                <div class="bg-gradient-to-r from-green-500 to-teal-500 px-6 py-4">
-                    <h3 class="text-lg font-semibold text-white">Riwayat Catatan Kesehatan</h3>
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-journal-medical"></i> Catatan Kesehatan</span>
+                    <a href="{{ route('catatan.create', ['type' => 'balita', 'id' => $balita->id]) }}"
+                        class="btn btn-sm btn-light">
+                        <i class="bi bi-plus"></i>
+                    </a>
                 </div>
-                <div class="p-6">
+                <div class="card-body">
                     @if($balita->catatanKesehatans->count() > 0)
-                        <div class="space-y-4">
-                            @foreach($balita->catatanKesehatans->sortByDesc('tanggal') as $catatan)
-                                <div class="border rounded-lg p-4 hover:bg-gray-50">
-                                    <div class="flex justify-between items-start">
-                                        <div class="flex-1">
-                                            <p class="text-sm text-gray-500">{{ $catatan->tanggal->format('d F Y') }}</p>
-                                            <p class="mt-1 font-medium text-gray-900">{{ $catatan->catatan }}</p>
-                                            @if($catatan->tindakan)
-                                                <p class="mt-1 text-sm text-gray-600"><strong>Tindakan:</strong>
-                                                    {{ $catatan->tindakan }}</p>
-                                            @endif
-                                            <div class="mt-2 flex flex-wrap gap-2 text-xs text-gray-500">
-                                                @if($catatan->berat_badan)
-                                                    <span class="bg-gray-100 px-2 py-1 rounded">BB: {{ $catatan->berat_badan }}
-                                                        kg</span>
-                                                @endif
-                                                @if($catatan->tinggi_badan)
-                                                    <span class="bg-gray-100 px-2 py-1 rounded">TB: {{ $catatan->tinggi_badan }}
-                                                        cm</span>
-                                                @endif
-                                                @if($catatan->suhu_tubuh)
-                                                    <span class="bg-gray-100 px-2 py-1 rounded">Suhu:
-                                                        {{ $catatan->suhu_tubuh }}°C</span>
-                                                @endif
-                                            </div>
-                                        </div>
-                                        <a href="{{ route('catatan.show', $catatan) }}"
-                                            class="text-blue-600 hover:text-blue-800 text-sm">Detail</a>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
+                        @foreach($balita->catatanKesehatans->sortByDesc('tanggal')->take(5) as $catatan)
+                            <div class="border-bottom pb-2 mb-2">
+                                <small class="text-muted">{{ $catatan->tanggal->format('d M Y') }}</small>
+                                <p class="mb-1">{{ Str::limit($catatan->catatan, 60) }}</p>
+                                <a href="{{ route('catatan.show', $catatan) }}"
+                                    class="btn btn-sm btn-outline-primary">Detail</a>
+                            </div>
+                        @endforeach
                     @else
-                        <div class="text-center py-8 text-gray-500">
-                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                                </path>
-                            </svg>
-                            <p class="mt-2">Belum ada catatan kesehatan</p>
-                            <a href="{{ route('catatan.create', ['type' => 'balita', 'id' => $balita->id]) }}"
-                                class="mt-4 inline-block text-green-600 hover:text-green-800">Tambah catatan pertama →</a>
-                        </div>
+                        <p class="text-muted text-center mb-0">Belum ada catatan</p>
                     @endif
                 </div>
             </div>

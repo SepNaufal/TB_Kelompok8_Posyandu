@@ -1,58 +1,70 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center">
-            <a href="{{ route('kader.index') }}" class="text-gray-500 hover:text-gray-700 mr-4"><svg class="w-6 h-6"
-                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                </svg></a>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Tambah Data Kader</h2>
+        <div class="d-flex align-items-center">
+            <a href="{{ route('kader.index') }}" class="btn btn-outline-secondary me-3"><i
+                    class="bi bi-arrow-left"></i></a>
+            <h4 class="fw-bold text-success mb-0">Tambah Data Kader</h4>
         </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl rounded-lg">
-                <form action="{{ route('kader.store') }}" method="POST" class="p-6 space-y-6">
-                    @csrf
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div><label for="nama" class="block text-sm font-medium text-gray-700">Nama <span
-                                    class="text-red-500">*</span></label><input type="text" name="nama" id="nama"
-                                value="{{ old('nama') }}" required
-                                class="mt-1 block w-full rounded-lg border-gray-300">@error('nama')<p
-                                class="mt-1 text-sm text-red-500">{{ $message }}</p>@enderror</div>
-                        <div><label for="no_hp" class="block text-sm font-medium text-gray-700">No. HP <span
-                                    class="text-red-500">*</span></label><input type="text" name="no_hp" id="no_hp"
-                                value="{{ old('no_hp') }}" required
-                                class="mt-1 block w-full rounded-lg border-gray-300">@error('no_hp')<p
-                                class="mt-1 text-sm text-red-500">{{ $message }}</p>@enderror</div>
-                        <div><label for="jabatan" class="block text-sm font-medium text-gray-700">Jabatan <span
-                                    class="text-red-500">*</span></label><select name="jabatan" id="jabatan" required
-                                class="mt-1 block w-full rounded-lg border-gray-300">
-                                <option value="">Pilih Jabatan</option>
-                                @foreach(['Ketua', 'Sekretaris', 'Bendahara', 'Anggota'] as $j)<option value="{{ $j }}"
-                                {{ old('jabatan') == $j ? 'selected' : '' }}>{{ $j }}</option>@endforeach
-                            </select></div>
-                        <div><label for="tanggal_bergabung" class="block text-sm font-medium text-gray-700">Tanggal
-                                Bergabung</label><input type="date" name="tanggal_bergabung" id="tanggal_bergabung"
-                                value="{{ old('tanggal_bergabung') }}" max="{{ date('Y-m-d') }}"
-                                class="mt-1 block w-full rounded-lg border-gray-300"></div>
-                        <div class="flex items-center"><input type="checkbox" name="aktif" id="aktif" value="1" {{ old('aktif', true) ? 'checked' : '' }}
-                                class="rounded border-gray-300 text-green-600 focus:ring-green-500"><label for="aktif"
-                                class="ml-2 text-sm text-gray-700">Status Aktif</label></div>
-                    </div>
-                    <div><label for="alamat" class="block text-sm font-medium text-gray-700">Alamat <span
-                                class="text-red-500">*</span></label><textarea name="alamat" id="alamat" rows="3"
-                            required
-                            class="mt-1 block w-full rounded-lg border-gray-300">{{ old('alamat') }}</textarea>@error('alamat')
-                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>@enderror</div>
-                    <div class="flex justify-end gap-4">
-                        <a href="{{ route('kader.index') }}"
-                            class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-6 rounded-lg">Batal</a>
-                        <button type="submit"
-                            class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg">Simpan</button>
-                    </div>
-                </form>
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-success text-white"><i class="bi bi-plus-circle"></i> Form Tambah Kader</div>
+                <div class="card-body">
+                    <form action="{{ route('kader.store') }}" method="POST">
+                        @csrf
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="nama" class="form-label">Nama <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama"
+                                    name="nama" value="{{ old('nama') }}" required>
+                                @error('nama')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="no_hp" class="form-label">No. HP <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control @error('no_hp') is-invalid @enderror" id="no_hp"
+                                    name="no_hp" value="{{ old('no_hp') }}" required>
+                                @error('no_hp')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="jabatan" class="form-label">Jabatan <span
+                                        class="text-danger">*</span></label>
+                                <select class="form-select @error('jabatan') is-invalid @enderror" id="jabatan"
+                                    name="jabatan" required>
+                                    <option value="">Pilih Jabatan</option>
+                                    @foreach(['Ketua', 'Sekretaris', 'Bendahara', 'Anggota'] as $jab)
+                                        <option value="{{ $jab }}" {{ old('jabatan') == $jab ? 'selected' : '' }}>{{ $jab }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('jabatan')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="tanggal_bergabung" class="form-label">Tanggal Bergabung</label>
+                                <input type="date" class="form-control" id="tanggal_bergabung" name="tanggal_bergabung"
+                                    value="{{ old('tanggal_bergabung') }}" max="{{ date('Y-m-d') }}">
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="alamat" class="form-label">Alamat <span class="text-danger">*</span></label>
+                                <textarea class="form-control @error('alamat') is-invalid @enderror" id="alamat"
+                                    name="alamat" rows="2" required>{{ old('alamat') }}</textarea>
+                                @error('alamat')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                            </div>
+                            <div class="col-12 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="aktif" name="aktif" value="1" {{ old('aktif', true) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="aktif">Aktif</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="{{ route('kader.index') }}" class="btn btn-secondary"><i class="bi bi-x-lg"></i>
+                                Batal</a>
+                            <button type="submit" class="btn btn-success"><i class="bi bi-check-lg"></i> Simpan</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

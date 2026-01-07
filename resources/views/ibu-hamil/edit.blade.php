@@ -1,85 +1,77 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center">
-            <a href="{{ route('ibu-hamil.index') }}" class="text-gray-500 hover:text-gray-700 mr-4">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                </svg>
-            </a>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Edit Data Ibu Hamil</h2>
+        <div class="d-flex align-items-center">
+            <a href="{{ route('ibu-hamil.index') }}" class="btn btn-outline-secondary me-3"><i
+                    class="bi bi-arrow-left"></i></a>
+            <h4 class="fw-bold mb-0" style="color: #6f42c1;">Edit Data Ibu Hamil</h4>
         </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl rounded-lg">
-                <form action="{{ route('ibu-hamil.update', $ibuHamil) }}" method="POST" class="p-6 space-y-6">
-                    @csrf @method('PUT')
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label for="nama" class="block text-sm font-medium text-gray-700">Nama <span
-                                    class="text-red-500">*</span></label>
-                            <input type="text" name="nama" id="nama" value="{{ old('nama', $ibuHamil->nama) }}" required
-                                class="mt-1 block w-full rounded-lg border-gray-300">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-warning text-dark">
+                    <i class="bi bi-pencil"></i> Form Edit Ibu Hamil
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('ibu-hamil.update', $ibuHamil) }}" method="POST">
+                        @csrf @method('PUT')
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="nama" class="form-label">Nama <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="nama" name="nama"
+                                    value="{{ old('nama', $ibuHamil->nama) }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="tanggal_lahir" class="form-label">Tanggal Lahir <span
+                                        class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir"
+                                    value="{{ old('tanggal_lahir', $ibuHamil->tanggal_lahir->format('Y-m-d')) }}"
+                                    required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="no_hp" class="form-label">No. HP</label>
+                                <input type="text" class="form-control" id="no_hp" name="no_hp"
+                                    value="{{ old('no_hp', $ibuHamil->no_hp) }}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="golongan_darah" class="form-label">Golongan Darah</label>
+                                <select class="form-select" id="golongan_darah" name="golongan_darah">
+                                    <option value="">Pilih</option>
+                                    @foreach(['A', 'B', 'AB', 'O'] as $gd)
+                                        <option value="{{ $gd }}" {{ old('golongan_darah', $ibuHamil->golongan_darah) == $gd ? 'selected' : '' }}>{{ $gd }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="usia_kehamilan" class="form-label">Usia Kehamilan (minggu)</label>
+                                <input type="number" class="form-control" id="usia_kehamilan" name="usia_kehamilan"
+                                    value="{{ old('usia_kehamilan', $ibuHamil->usia_kehamilan) }}" min="1" max="42">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="hpl" class="form-label">HPL</label>
+                                <input type="date" class="form-control" id="hpl" name="hpl"
+                                    value="{{ old('hpl', $ibuHamil->hpl?->format('Y-m-d')) }}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="nama_suami" class="form-label">Nama Suami</label>
+                                <input type="text" class="form-control" id="nama_suami" name="nama_suami"
+                                    value="{{ old('nama_suami', $ibuHamil->nama_suami) }}">
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="alamat" class="form-label">Alamat <span class="text-danger">*</span></label>
+                                <textarea class="form-control" id="alamat" name="alamat" rows="3"
+                                    required>{{ old('alamat', $ibuHamil->alamat) }}</textarea>
+                            </div>
                         </div>
-                        <div>
-                            <label for="tanggal_lahir" class="block text-sm font-medium text-gray-700">Tanggal Lahir
-                                <span class="text-red-500">*</span></label>
-                            <input type="date" name="tanggal_lahir" id="tanggal_lahir"
-                                value="{{ old('tanggal_lahir', $ibuHamil->tanggal_lahir->format('Y-m-d')) }}" required
-                                class="mt-1 block w-full rounded-lg border-gray-300">
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="{{ route('ibu-hamil.index') }}" class="btn btn-secondary"><i
+                                    class="bi bi-x-lg"></i> Batal</a>
+                            <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i>
+                                Perbarui</button>
                         </div>
-                        <div>
-                            <label for="no_hp" class="block text-sm font-medium text-gray-700">No. HP</label>
-                            <input type="text" name="no_hp" id="no_hp" value="{{ old('no_hp', $ibuHamil->no_hp) }}"
-                                class="mt-1 block w-full rounded-lg border-gray-300">
-                        </div>
-                        <div>
-                            <label for="golongan_darah" class="block text-sm font-medium text-gray-700">Golongan
-                                Darah</label>
-                            <select name="golongan_darah" id="golongan_darah"
-                                class="mt-1 block w-full rounded-lg border-gray-300">
-                                <option value="">Pilih</option>
-                                @foreach(['A', 'B', 'AB', 'O'] as $gd)
-                                    <option value="{{ $gd }}" {{ old('golongan_darah', $ibuHamil->golongan_darah) == $gd ? 'selected' : '' }}>{{ $gd }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div>
-                            <label for="usia_kehamilan" class="block text-sm font-medium text-gray-700">Usia Kehamilan
-                                (minggu)</label>
-                            <input type="number" name="usia_kehamilan" id="usia_kehamilan"
-                                value="{{ old('usia_kehamilan', $ibuHamil->usia_kehamilan) }}" min="1" max="42"
-                                class="mt-1 block w-full rounded-lg border-gray-300">
-                        </div>
-                        <div>
-                            <label for="hpl" class="block text-sm font-medium text-gray-700">Hari Perkiraan Lahir
-                                (HPL)</label>
-                            <input type="date" name="hpl" id="hpl"
-                                value="{{ old('hpl', $ibuHamil->hpl?->format('Y-m-d')) }}"
-                                class="mt-1 block w-full rounded-lg border-gray-300">
-                        </div>
-                        <div>
-                            <label for="nama_suami" class="block text-sm font-medium text-gray-700">Nama Suami</label>
-                            <input type="text" name="nama_suami" id="nama_suami"
-                                value="{{ old('nama_suami', $ibuHamil->nama_suami) }}"
-                                class="mt-1 block w-full rounded-lg border-gray-300">
-                        </div>
-                    </div>
-                    <div>
-                        <label for="alamat" class="block text-sm font-medium text-gray-700">Alamat <span
-                                class="text-red-500">*</span></label>
-                        <textarea name="alamat" id="alamat" rows="3" required
-                            class="mt-1 block w-full rounded-lg border-gray-300">{{ old('alamat', $ibuHamil->alamat) }}</textarea>
-                    </div>
-                    <div class="flex justify-end gap-4">
-                        <a href="{{ route('ibu-hamil.index') }}"
-                            class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-6 rounded-lg">Batal</a>
-                        <button type="submit"
-                            class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded-lg">Perbarui</button>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

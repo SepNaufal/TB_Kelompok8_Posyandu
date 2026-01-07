@@ -8,36 +8,50 @@
 
     <title>{{ config('app.name', 'Posyandu') }} - Login</title>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #198754 0%, #20c997 100%);
+            min-height: 100vh;
+        }
 
-    <!-- Alpine.js -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        .login-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .brand-logo {
+            font-size: 3rem;
+            color: #198754;
+        }
+    </style>
 </head>
 
-<body class="font-sans text-gray-900 antialiased">
-    <div
-        class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gradient-to-br from-green-500 to-teal-600">
-        <div class="text-center mb-6">
-            <div class="flex items-center justify-center">
-                <svg class="h-16 w-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
-                    </path>
-                </svg>
+<body>
+    <div class="container">
+        <div class="row justify-content-center align-items-center min-vh-100">
+            <div class="col-md-5 col-lg-4">
+                <div class="text-center mb-4">
+                    <i class="bi bi-heart-pulse-fill brand-logo text-white"></i>
+                    <h2 class="text-white fw-bold">Posyandu</h2>
+                    <p class="text-white-50">Sistem Manajemen Posyandu</p>
+                </div>
+                <div class="card login-card">
+                    <div class="card-body p-4">
+                        {{ $slot }}
+                    </div>
+                </div>
             </div>
-            <h1 class="text-3xl font-bold text-white mt-2">Posyandu</h1>
-            <p class="text-green-100">Sistem Manajemen Posyandu</p>
-        </div>
-
-        <div class="w-full sm:max-w-md px-6 py-6 bg-white shadow-xl overflow-hidden sm:rounded-xl">
-            {{ $slot }}
         </div>
     </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
