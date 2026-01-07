@@ -10,6 +10,9 @@ class Balita extends Model
 {
     use HasFactory;
 
+    /**
+     * Kolom-kolom yang dapat diisi secara massal.
+     */
     protected $fillable = [
         'nama',
         'tanggal_lahir',
@@ -21,6 +24,9 @@ class Balita extends Model
         'nik',
     ];
 
+    /**
+     * Konversi tipe data untuk kolom-kolom tertentu.
+     */
     protected $casts = [
         'tanggal_lahir' => 'date',
         'berat_badan' => 'decimal:2',
@@ -28,7 +34,7 @@ class Balita extends Model
     ];
 
     /**
-     * Get catatan kesehatan balita
+     * Relasi: Balita memiliki banyak catatan kesehatan (polimorfik).
      */
     public function catatanKesehatans()
     {
@@ -36,24 +42,24 @@ class Balita extends Model
     }
 
     /**
-     * Hitung usia dalam bulan
+     * Accessor: Menghitung usia balita dalam bulan.
      */
-    public function getUsiaAttribute(): int
+    public function getUsiaAttribute()
     {
-        return Carbon::parse($this->tanggal_lahir)->diffInMonths(Carbon::now());
+        return $this->tanggal_lahir->diffInMonths(Carbon::now());
     }
 
     /**
-     * Get usia formatted
+     * Accessor: Mendapatkan usia dalam format tahun dan bulan.
      */
-    public function getUsiaFormattedAttribute(): string
+    public function getUsiaLengkapAttribute()
     {
-        $bulan = $this->usia;
-        if ($bulan >= 12) {
-            $tahun = floor($bulan / 12);
-            $sisaBulan = $bulan % 12;
-            return $tahun . ' tahun ' . ($sisaBulan > 0 ? $sisaBulan . ' bulan' : '');
+        $tahun = $this->tanggal_lahir->diffInYears(Carbon::now());
+        $bulan = $this->tanggal_lahir->diffInMonths(Carbon::now()) % 12;
+
+        if ($tahun > 0) {
+            return "{$tahun} tahun {$bulan} bulan";
         }
-        return $bulan . ' bulan';
+        return "{$bulan} bulan";
     }
 }

@@ -9,6 +9,9 @@ class JadwalPosyandu extends Model
 {
     use HasFactory;
 
+    /**
+     * Kolom-kolom yang dapat diisi secara massal.
+     */
     protected $fillable = [
         'tanggal',
         'waktu_mulai',
@@ -20,12 +23,15 @@ class JadwalPosyandu extends Model
         'status',
     ];
 
+    /**
+     * Konversi tipe data untuk kolom-kolom tertentu.
+     */
     protected $casts = [
         'tanggal' => 'date',
     ];
 
     /**
-     * Get kader penanggung jawab
+     * Relasi: Jadwal posyandu dimiliki oleh satu kader.
      */
     public function kader()
     {
@@ -33,9 +39,9 @@ class JadwalPosyandu extends Model
     }
 
     /**
-     * Get status badge class
+     * Accessor: Mendapatkan warna badge berdasarkan status jadwal.
      */
-    public function getStatusBadgeAttribute(): string
+    public function getStatusBadgeAttribute()
     {
         return match ($this->status) {
             'Dijadwalkan' => 'bg-blue-100 text-blue-800',

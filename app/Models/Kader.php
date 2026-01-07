@@ -9,6 +9,9 @@ class Kader extends Model
 {
     use HasFactory;
 
+    /**
+     * Kolom-kolom yang dapat diisi secara massal.
+     */
     protected $fillable = [
         'nama',
         'alamat',
@@ -18,13 +21,16 @@ class Kader extends Model
         'aktif',
     ];
 
+    /**
+     * Konversi tipe data untuk kolom-kolom tertentu.
+     */
     protected $casts = [
         'tanggal_bergabung' => 'date',
         'aktif' => 'boolean',
     ];
 
     /**
-     * Get jadwal posyandu yang ditangani oleh kader
+     * Relasi: Kader memiliki banyak jadwal posyandu.
      */
     public function jadwalPosyandus()
     {

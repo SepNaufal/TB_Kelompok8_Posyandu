@@ -10,8 +10,14 @@ class IbuHamil extends Model
 {
     use HasFactory;
 
+    /**
+     * Nama tabel di database.
+     */
     protected $table = 'ibu_hamils';
 
+    /**
+     * Kolom-kolom yang dapat diisi secara massal.
+     */
     protected $fillable = [
         'nama',
         'tanggal_lahir',
@@ -23,13 +29,17 @@ class IbuHamil extends Model
         'nama_suami',
     ];
 
+    /**
+     * Konversi tipe data untuk kolom-kolom tertentu.
+     */
     protected $casts = [
         'tanggal_lahir' => 'date',
         'hpl' => 'date',
+        'usia_kehamilan' => 'integer',
     ];
 
     /**
-     * Get catatan kesehatan ibu hamil
+     * Relasi: Ibu hamil memiliki banyak catatan kesehatan (polimorfik).
      */
     public function catatanKesehatans()
     {
@@ -37,23 +47,25 @@ class IbuHamil extends Model
     }
 
     /**
-     * Hitung usia ibu
+     * Accessor: Menghitung usia ibu dalam tahun.
      */
-    public function getUsiaAttribute(): int
+    public function getUsiaAttribute()
     {
-        return Carbon::parse($this->tanggal_lahir)->age;
+        return $this->tanggal_lahir->diffInYears(Carbon::now());
     }
 
     /**
-     * Trimester kehamilan
+     * Accessor: Mendapatkan trimester kehamilan berdasarkan usia kehamilan.
      */
-    public function getTrimesterAttribute(): string
+    public function getTrimesterAttribute()
     {
-        if ($this->usia_kehamilan <= 12) {
+        if (!$this->usia_kehamilan)
+            return 'Belum diketahui';
+
+        if ($this->usia_kehamilan <= 12)
             return 'Trimester 1';
-        } elseif ($this->usia_kehamilan <= 27) {
+        if ($this->usia_kehamilan <= 27)
             return 'Trimester 2';
-        }
         return 'Trimester 3';
     }
 }

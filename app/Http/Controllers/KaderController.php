@@ -8,13 +8,13 @@ use Illuminate\Http\Request;
 class KaderController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Menampilkan daftar semua data kader.
      */
     public function index(Request $request)
     {
         $query = Kader::query();
 
-        // Search functionality
+        // Fitur pencarian
         if ($request->has('search') && $request->search != '') {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
@@ -24,7 +24,7 @@ class KaderController extends Controller
             });
         }
 
-        // Sorting functionality
+        // Fitur pengurutan
         $sortField = $request->get('sort', 'nama');
         $sortOrder = $request->get('order', 'asc');
         $allowedSorts = ['nama', 'jabatan', 'tanggal_bergabung', 'aktif', 'created_at'];
@@ -39,7 +39,7 @@ class KaderController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Menampilkan form untuk menambah data kader baru.
      */
     public function create()
     {
@@ -47,10 +47,11 @@ class KaderController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Menyimpan data kader baru ke database.
      */
     public function store(Request $request)
     {
+        // Validasi input
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
             'alamat' => 'required|string',
@@ -60,8 +61,10 @@ class KaderController extends Controller
             'aktif' => 'boolean',
         ]);
 
+        // Set status aktif berdasarkan checkbox
         $validated['aktif'] = $request->has('aktif');
 
+        // Simpan ke database
         Kader::create($validated);
 
         return redirect()->route('kader.index')
@@ -69,16 +72,17 @@ class KaderController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Menampilkan detail data kader tertentu.
      */
     public function show(Kader $kader)
     {
+        // Muat relasi jadwal posyandu
         $kader->load('jadwalPosyandus');
         return view('kader.show', compact('kader'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Menampilkan form untuk mengedit data kader.
      */
     public function edit(Kader $kader)
     {
@@ -86,10 +90,11 @@ class KaderController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Memperbarui data kader di database.
      */
     public function update(Request $request, Kader $kader)
     {
+        // Validasi input
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
             'alamat' => 'required|string',
@@ -99,8 +104,10 @@ class KaderController extends Controller
             'aktif' => 'boolean',
         ]);
 
+        // Set status aktif berdasarkan checkbox
         $validated['aktif'] = $request->has('aktif');
 
+        // Perbarui data di database
         $kader->update($validated);
 
         return redirect()->route('kader.index')
@@ -108,10 +115,11 @@ class KaderController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Menghapus data kader dari database.
      */
     public function destroy(Kader $kader)
     {
+        // Hapus data dari database
         $kader->delete();
 
         return redirect()->route('kader.index')

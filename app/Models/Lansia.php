@@ -10,6 +10,9 @@ class Lansia extends Model
 {
     use HasFactory;
 
+    /**
+     * Kolom-kolom yang dapat diisi secara massal.
+     */
     protected $fillable = [
         'nama',
         'tanggal_lahir',
@@ -20,12 +23,15 @@ class Lansia extends Model
         'golongan_darah',
     ];
 
+    /**
+     * Konversi tipe data untuk kolom-kolom tertentu.
+     */
     protected $casts = [
         'tanggal_lahir' => 'date',
     ];
 
     /**
-     * Get catatan kesehatan lansia
+     * Relasi: Lansia memiliki banyak catatan kesehatan (polimorfik).
      */
     public function catatanKesehatans()
     {
@@ -33,10 +39,10 @@ class Lansia extends Model
     }
 
     /**
-     * Hitung usia lansia
+     * Accessor: Menghitung usia lansia dalam tahun.
      */
-    public function getUsiaAttribute(): int
+    public function getUsiaAttribute()
     {
-        return Carbon::parse($this->tanggal_lahir)->age;
+        return $this->tanggal_lahir->diffInYears(Carbon::now());
     }
 }

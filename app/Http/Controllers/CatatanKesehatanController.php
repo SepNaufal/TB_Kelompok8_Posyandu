@@ -11,13 +11,13 @@ use Illuminate\Http\Request;
 class CatatanKesehatanController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Menampilkan daftar semua catatan kesehatan.
      */
     public function index(Request $request)
     {
         $query = CatatanKesehatan::with('catatantable');
 
-        // Filter by type
+        // Filter berdasarkan tipe pasien
         if ($request->has('type') && $request->type != '') {
             $typeMap = [
                 'balita' => 'App\Models\Balita',
@@ -29,7 +29,7 @@ class CatatanKesehatanController extends Controller
             }
         }
 
-        // Search functionality
+        // Fitur pencarian
         if ($request->has('search') && $request->search != '') {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
@@ -38,7 +38,7 @@ class CatatanKesehatanController extends Controller
             });
         }
 
-        // Sorting functionality
+        // Fitur pengurutan
         $sortField = $request->get('sort', 'tanggal');
         $sortOrder = $request->get('order', 'desc');
         $allowedSorts = ['tanggal', 'created_at'];
@@ -53,13 +53,14 @@ class CatatanKesehatanController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Menampilkan form untuk menambah catatan kesehatan baru.
      */
     public function create(Request $request)
     {
         $type = $request->get('type', 'balita');
         $id = $request->get('id');
 
+        // Cari data pasien jika ada parameter
         $subject = null;
         if ($type === 'balita' && $id) {
             $subject = Balita::find($id);
@@ -69,6 +70,7 @@ class CatatanKesehatanController extends Controller
             $subject = Lansia::find($id);
         }
 
+        // Ambil semua data pasien untuk dropdown
         $balitas = Balita::orderBy('nama')->get();
         $ibuHamils = IbuHamil::orderBy('nama')->get();
         $lansias = Lansia::orderBy('nama')->get();
@@ -77,10 +79,11 @@ class CatatanKesehatanController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Menyimpan catatan kesehatan baru ke database.
      */
     public function store(Request $request)
     {
+        // Validasi input
         $validated = $request->validate([
             'tanggal' => 'required|date|before_or_equal:today',
             'catatan' => 'required|string',
@@ -94,7 +97,7 @@ class CatatanKesehatanController extends Controller
             'catatantable_id' => 'required|integer',
         ]);
 
-        // Verify the record exists
+        // Verifikasi bahwa data pasien ada di database
         $modelClass = $validated['catatantable_type'];
         $subject = $modelClass::find($validated['catatantable_id']);
 
@@ -102,6 +105,7 @@ class CatatanKesehatanController extends Controller
             return back()->withErrors(['catatantable_id' => 'Data tidak ditemukan.']);
         }
 
+        // Simpan ke database
         CatatanKesehatan::create($validated);
 
         return redirect()->route('catatan.index')
@@ -109,21 +113,24 @@ class CatatanKesehatanController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Menampilkan detail catatan kesehatan tertentu.
      */
     public function show(CatatanKesehatan $catatan)
     {
+        // Muat relasi pasien
         $catatan->load('catatantable');
         return view('catatan.show', compact('catatan'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Menampilkan form untuk mengedit catatan kesehatan.
      */
     public function edit(CatatanKesehatan $catatan)
     {
+        // Muat relasi pasien
         $catatan->load('catatantable');
 
+        // Ambil semua data pasien untuk dropdown
         $balitas = Balita::orderBy('nama')->get();
         $ibuHamils = IbuHamil::orderBy('nama')->get();
         $lansias = Lansia::orderBy('nama')->get();
@@ -132,10 +139,11 @@ class CatatanKesehatanController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Memperbarui catatan kesehatan di database.
      */
     public function update(Request $request, CatatanKesehatan $catatan)
     {
+        // Validasi input
         $validated = $request->validate([
             'tanggal' => 'required|date|before_or_equal:today',
             'catatan' => 'required|string',
@@ -149,6 +157,7 @@ class CatatanKesehatanController extends Controller
             'catatantable_id' => 'required|integer',
         ]);
 
+        // Perbarui data di database
         $catatan->update($validated);
 
         return redirect()->route('catatan.index')
@@ -156,10 +165,11 @@ class CatatanKesehatanController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Menghapus catatan kesehatan dari database.
      */
     public function destroy(CatatanKesehatan $catatan)
     {
+        // Hapus data dari database
         $catatan->delete();
 
         return redirect()->route('catatan.index')

@@ -6,26 +6,26 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
     /**
-     * Run the migrations.
+     * Menjalankan migrasi untuk membuat tabel ibu_hamils.
      */
     public function up(): void
     {
         Schema::create('ibu_hamils', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->date('tanggal_lahir');
-            $table->text('alamat');
-            $table->string('no_hp', 20)->nullable();
-            $table->integer('usia_kehamilan')->nullable()->comment('dalam minggu');
-            $table->date('hpl')->nullable()->comment('Hari Perkiraan Lahir');
-            $table->string('golongan_darah', 5)->nullable();
-            $table->string('nama_suami')->nullable();
+            $table->string('nama');                          // Nama lengkap ibu hamil
+            $table->date('tanggal_lahir');                   // Tanggal lahir
+            $table->text('alamat');                          // Alamat tempat tinggal
+            $table->string('no_hp', 20)->nullable();         // Nomor handphone
+            $table->integer('usia_kehamilan')->nullable();   // Usia kehamilan dalam minggu
+            $table->date('hpl')->nullable();                 // Hari Perkiraan Lahir
+            $table->string('golongan_darah', 5)->nullable(); // Golongan darah: A, B, AB, O
+            $table->string('nama_suami')->nullable();        // Nama suami
             $table->timestamps();
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Membatalkan migrasi dan menghapus tabel ibu_hamils.
      */
     public function down(): void
     {

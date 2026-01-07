@@ -8,13 +8,13 @@ use Illuminate\Http\Request;
 class BalitaController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Menampilkan daftar semua data balita.
      */
     public function index(Request $request)
     {
         $query = Balita::query();
 
-        // Search functionality
+        // Fitur pencarian
         if ($request->has('search') && $request->search != '') {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
@@ -24,7 +24,7 @@ class BalitaController extends Controller
             });
         }
 
-        // Sorting functionality
+        // Fitur pengurutan
         $sortField = $request->get('sort', 'nama');
         $sortOrder = $request->get('order', 'asc');
         $allowedSorts = ['nama', 'tanggal_lahir', 'jenis_kelamin', 'nama_ortu', 'created_at'];
@@ -39,7 +39,7 @@ class BalitaController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Menampilkan form untuk menambah data balita baru.
      */
     public function create()
     {
@@ -47,10 +47,11 @@ class BalitaController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Menyimpan data balita baru ke database.
      */
     public function store(Request $request)
     {
+        // Validasi input
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
             'tanggal_lahir' => 'required|date|before_or_equal:today',
@@ -62,6 +63,7 @@ class BalitaController extends Controller
             'nik' => 'nullable|string|size:16',
         ]);
 
+        // Simpan ke database
         Balita::create($validated);
 
         return redirect()->route('balita.index')
@@ -69,16 +71,17 @@ class BalitaController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Menampilkan detail data balita tertentu.
      */
     public function show(Balita $balita)
     {
+        // Muat relasi catatan kesehatan
         $balita->load('catatanKesehatans');
         return view('balita.show', compact('balita'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Menampilkan form untuk mengedit data balita.
      */
     public function edit(Balita $balita)
     {
@@ -86,10 +89,11 @@ class BalitaController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Memperbarui data balita di database.
      */
     public function update(Request $request, Balita $balita)
     {
+        // Validasi input
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
             'tanggal_lahir' => 'required|date|before_or_equal:today',
@@ -101,6 +105,7 @@ class BalitaController extends Controller
             'nik' => 'nullable|string|size:16',
         ]);
 
+        // Perbarui data di database
         $balita->update($validated);
 
         return redirect()->route('balita.index')
@@ -108,10 +113,11 @@ class BalitaController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Menghapus data balita dari database.
      */
     public function destroy(Balita $balita)
     {
+        // Hapus data dari database
         $balita->delete();
 
         return redirect()->route('balita.index')

@@ -13,10 +13,11 @@ use Illuminate\Http\Request;
 class DashboardController extends Controller
 {
     /**
-     * Display dashboard with statistics.
+     * Menampilkan halaman dashboard dengan statistik.
      */
     public function index()
     {
+        // Hitung statistik untuk setiap entitas
         $stats = [
             'balita' => Balita::count(),
             'ibu_hamil' => IbuHamil::count(),
@@ -30,6 +31,7 @@ class DashboardController extends Controller
                 ->count(),
         ];
 
+        // Ambil 5 jadwal posyandu mendatang
         $jadwalMendatang = JadwalPosyandu::with('kader')
             ->where('tanggal', '>=', now())
             ->where('status', 'Dijadwalkan')
@@ -37,6 +39,7 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
 
+        // Ambil 5 catatan kesehatan terbaru
         $catatanTerbaru = CatatanKesehatan::with('catatantable')
             ->orderBy('created_at', 'desc')
             ->limit(5)

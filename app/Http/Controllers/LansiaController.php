@@ -8,13 +8,13 @@ use Illuminate\Http\Request;
 class LansiaController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Menampilkan daftar semua data lansia.
      */
     public function index(Request $request)
     {
         $query = Lansia::query();
 
-        // Search functionality
+        // Fitur pencarian
         if ($request->has('search') && $request->search != '') {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
@@ -24,7 +24,7 @@ class LansiaController extends Controller
             });
         }
 
-        // Sorting functionality
+        // Fitur pengurutan
         $sortField = $request->get('sort', 'nama');
         $sortOrder = $request->get('order', 'asc');
         $allowedSorts = ['nama', 'tanggal_lahir', 'jenis_kelamin', 'created_at'];
@@ -39,7 +39,7 @@ class LansiaController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Menampilkan form untuk menambah data lansia baru.
      */
     public function create()
     {
@@ -47,10 +47,11 @@ class LansiaController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Menyimpan data lansia baru ke database.
      */
     public function store(Request $request)
     {
+        // Validasi input
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
             'tanggal_lahir' => 'required|date|before_or_equal:today',
@@ -61,6 +62,7 @@ class LansiaController extends Controller
             'golongan_darah' => 'nullable|string|max:5',
         ]);
 
+        // Simpan ke database
         Lansia::create($validated);
 
         return redirect()->route('lansia.index')
@@ -68,16 +70,17 @@ class LansiaController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Menampilkan detail data lansia tertentu.
      */
     public function show(Lansia $lansia)
     {
+        // Muat relasi catatan kesehatan
         $lansia->load('catatanKesehatans');
         return view('lansia.show', compact('lansia'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Menampilkan form untuk mengedit data lansia.
      */
     public function edit(Lansia $lansia)
     {
@@ -85,10 +88,11 @@ class LansiaController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Memperbarui data lansia di database.
      */
     public function update(Request $request, Lansia $lansia)
     {
+        // Validasi input
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
             'tanggal_lahir' => 'required|date|before_or_equal:today',
@@ -99,6 +103,7 @@ class LansiaController extends Controller
             'golongan_darah' => 'nullable|string|max:5',
         ]);
 
+        // Perbarui data di database
         $lansia->update($validated);
 
         return redirect()->route('lansia.index')
@@ -106,10 +111,11 @@ class LansiaController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Menghapus data lansia dari database.
      */
     public function destroy(Lansia $lansia)
     {
+        // Hapus data dari database
         $lansia->delete();
 
         return redirect()->route('lansia.index')

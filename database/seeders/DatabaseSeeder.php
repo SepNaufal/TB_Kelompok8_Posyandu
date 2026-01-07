@@ -15,18 +15,18 @@ use Illuminate\Support\Facades\Hash;
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Mengisi database dengan data awal untuk pengujian.
      */
     public function run(): void
     {
-        // Create admin user
+        // Membuat akun admin
         User::create([
             'name' => 'Admin Posyandu',
             'email' => 'admin@posyandu.com',
             'password' => Hash::make('password'),
         ]);
 
-        // Create Kader
+        // Membuat data Kader
         $kaderData = [
             ['nama' => 'Ibu Siti Aminah', 'alamat' => 'Jl. Melati No. 10, RT 01/RW 02', 'no_hp' => '081234567890', 'jabatan' => 'Ketua', 'tanggal_bergabung' => '2020-01-15', 'aktif' => true],
             ['nama' => 'Ibu Dewi Susanti', 'alamat' => 'Jl. Mawar No. 15, RT 02/RW 02', 'no_hp' => '081234567891', 'jabatan' => 'Sekretaris', 'tanggal_bergabung' => '2020-03-20', 'aktif' => true],
@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
             Kader::create($kader);
         }
 
-        // Create Balita
+        // Membuat data Balita
         $balitaData = [
             ['nama' => 'Ahmad Fauzi', 'tanggal_lahir' => '2024-03-15', 'jenis_kelamin' => 'L', 'nama_ortu' => 'Bapak Fauzi', 'alamat' => 'Jl. Dahlia No. 1, RT 01/RW 01', 'berat_badan' => 10.5, 'tinggi_badan' => 75.0],
             ['nama' => 'Siti Fatimah', 'tanggal_lahir' => '2023-11-20', 'jenis_kelamin' => 'P', 'nama_ortu' => 'Ibu Fatimah', 'alamat' => 'Jl. Dahlia No. 3, RT 01/RW 01', 'berat_badan' => 12.0, 'tinggi_badan' => 80.5],
@@ -50,7 +50,7 @@ class DatabaseSeeder extends Seeder
             Balita::create($balita);
         }
 
-        // Create Ibu Hamil
+        // Membuat data Ibu Hamil
         $ibuHamilData = [
             ['nama' => 'Sri Wahyuni', 'tanggal_lahir' => '1995-05-20', 'alamat' => 'Jl. Anggrek No. 10, RT 01/RW 03', 'no_hp' => '081345678901', 'usia_kehamilan' => 28, 'hpl' => '2026-03-15', 'golongan_darah' => 'A', 'nama_suami' => 'Budi Santoso'],
             ['nama' => 'Ani Lestari', 'tanggal_lahir' => '1998-08-15', 'alamat' => 'Jl. Kenanga No. 5, RT 03/RW 01', 'no_hp' => '081345678902', 'usia_kehamilan' => 16, 'hpl' => '2026-06-20', 'golongan_darah' => 'B', 'nama_suami' => 'Dedi Kurniawan'],
@@ -61,7 +61,7 @@ class DatabaseSeeder extends Seeder
             IbuHamil::create($ibuHamil);
         }
 
-        // Create Lansia
+        // Membuat data Lansia
         $lansiaData = [
             ['nama' => 'H. Abdul Rahman', 'tanggal_lahir' => '1955-03-10', 'jenis_kelamin' => 'L', 'alamat' => 'Jl. Melati No. 20, RT 01/RW 02', 'no_hp' => '081456789012', 'riwayat_penyakit' => 'Diabetes, Hipertensi', 'golongan_darah' => 'A'],
             ['nama' => 'Hj. Siti Khadijah', 'tanggal_lahir' => '1950-07-25', 'jenis_kelamin' => 'P', 'alamat' => 'Jl. Mawar No. 18, RT 02/RW 02', 'no_hp' => '081456789013', 'riwayat_penyakit' => 'Asam Urat', 'golongan_darah' => 'B'],
@@ -72,7 +72,7 @@ class DatabaseSeeder extends Seeder
             Lansia::create($lansia);
         }
 
-        // Create Jadwal Posyandu
+        // Membuat data Jadwal Posyandu
         $jadwalData = [
             ['tanggal' => '2026-01-10', 'waktu_mulai' => '08:00', 'waktu_selesai' => '12:00', 'lokasi' => 'Balai RW 02', 'kegiatan' => 'Penimbangan Balita', 'kader_id' => 1, 'status' => 'Dijadwalkan'],
             ['tanggal' => '2026-01-17', 'waktu_mulai' => '08:00', 'waktu_selesai' => '11:00', 'lokasi' => 'Puskesmas Kelurahan', 'kegiatan' => 'Pemeriksaan Ibu Hamil', 'kader_id' => 2, 'status' => 'Dijadwalkan'],
@@ -83,7 +83,7 @@ class DatabaseSeeder extends Seeder
             JadwalPosyandu::create($jadwal);
         }
 
-        // Create Catatan Kesehatan
+        // Membuat data Catatan Kesehatan untuk Balita
         $balita1 = Balita::first();
         CatatanKesehatan::create([
             'tanggal' => '2025-12-15',
@@ -95,6 +95,7 @@ class DatabaseSeeder extends Seeder
             'catatantable_id' => $balita1->id,
         ]);
 
+        // Membuat data Catatan Kesehatan untuk Ibu Hamil
         $ibuHamil1 = IbuHamil::first();
         CatatanKesehatan::create([
             'tanggal' => '2025-12-20',
@@ -107,6 +108,7 @@ class DatabaseSeeder extends Seeder
             'catatantable_id' => $ibuHamil1->id,
         ]);
 
+        // Membuat data Catatan Kesehatan untuk Lansia
         $lansia1 = Lansia::first();
         CatatanKesehatan::create([
             'tanggal' => '2025-12-22',

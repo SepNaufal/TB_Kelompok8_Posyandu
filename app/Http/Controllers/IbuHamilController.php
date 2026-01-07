@@ -8,13 +8,13 @@ use Illuminate\Http\Request;
 class IbuHamilController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Menampilkan daftar semua data ibu hamil.
      */
     public function index(Request $request)
     {
         $query = IbuHamil::query();
 
-        // Search functionality
+        // Fitur pencarian
         if ($request->has('search') && $request->search != '') {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
@@ -24,7 +24,7 @@ class IbuHamilController extends Controller
             });
         }
 
-        // Sorting functionality
+        // Fitur pengurutan
         $sortField = $request->get('sort', 'nama');
         $sortOrder = $request->get('order', 'asc');
         $allowedSorts = ['nama', 'tanggal_lahir', 'usia_kehamilan', 'hpl', 'created_at'];
@@ -39,7 +39,7 @@ class IbuHamilController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Menampilkan form untuk menambah data ibu hamil baru.
      */
     public function create()
     {
@@ -47,10 +47,11 @@ class IbuHamilController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Menyimpan data ibu hamil baru ke database.
      */
     public function store(Request $request)
     {
+        // Validasi input
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
             'tanggal_lahir' => 'required|date|before_or_equal:today',
@@ -62,6 +63,7 @@ class IbuHamilController extends Controller
             'nama_suami' => 'nullable|string|max:255',
         ]);
 
+        // Simpan ke database
         IbuHamil::create($validated);
 
         return redirect()->route('ibu-hamil.index')
@@ -69,16 +71,17 @@ class IbuHamilController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Menampilkan detail data ibu hamil tertentu.
      */
     public function show(IbuHamil $ibuHamil)
     {
+        // Muat relasi catatan kesehatan
         $ibuHamil->load('catatanKesehatans');
         return view('ibu-hamil.show', compact('ibuHamil'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Menampilkan form untuk mengedit data ibu hamil.
      */
     public function edit(IbuHamil $ibuHamil)
     {
@@ -86,10 +89,11 @@ class IbuHamilController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Memperbarui data ibu hamil di database.
      */
     public function update(Request $request, IbuHamil $ibuHamil)
     {
+        // Validasi input
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
             'tanggal_lahir' => 'required|date|before_or_equal:today',
@@ -101,6 +105,7 @@ class IbuHamilController extends Controller
             'nama_suami' => 'nullable|string|max:255',
         ]);
 
+        // Perbarui data di database
         $ibuHamil->update($validated);
 
         return redirect()->route('ibu-hamil.index')
@@ -108,10 +113,11 @@ class IbuHamilController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Menghapus data ibu hamil dari database.
      */
     public function destroy(IbuHamil $ibuHamil)
     {
+        // Hapus data dari database
         $ibuHamil->delete();
 
         return redirect()->route('ibu-hamil.index')

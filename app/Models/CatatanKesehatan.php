@@ -9,8 +9,9 @@ class CatatanKesehatan extends Model
 {
     use HasFactory;
 
-    protected $table = 'catatan_kesehatans';
-
+    /**
+     * Kolom-kolom yang dapat diisi secara massal.
+     */
     protected $fillable = [
         'tanggal',
         'catatan',
@@ -24,17 +25,20 @@ class CatatanKesehatan extends Model
         'catatantable_id',
     ];
 
+    /**
+     * Konversi tipe data untuk kolom-kolom tertentu.
+     */
     protected $casts = [
         'tanggal' => 'date',
-        'tekanan_darah_sistol' => 'decimal:1',
-        'tekanan_darah_diastol' => 'decimal:1',
+        'tekanan_darah_sistol' => 'integer',
+        'tekanan_darah_diastol' => 'integer',
         'berat_badan' => 'decimal:2',
         'tinggi_badan' => 'decimal:2',
         'suhu_tubuh' => 'decimal:1',
     ];
 
     /**
-     * Get the parent catatantable model (Balita, IbuHamil, or Lansia)
+     * Relasi Polimorfik: Catatan kesehatan dimiliki oleh Balita, Ibu Hamil, atau Lansia.
      */
     public function catatantable()
     {
@@ -42,26 +46,26 @@ class CatatanKesehatan extends Model
     }
 
     /**
-     * Get tekanan darah formatted
+     * Accessor: Mendapatkan tekanan darah dalam format sistol/diastol.
      */
-    public function getTekananDarahAttribute(): string
+    public function getTekananDarahAttribute()
     {
         if ($this->tekanan_darah_sistol && $this->tekanan_darah_diastol) {
-            return $this->tekanan_darah_sistol . '/' . $this->tekanan_darah_diastol . ' mmHg';
+            return "{$this->tekanan_darah_sistol}/{$this->tekanan_darah_diastol} mmHg";
         }
-        return '-';
+        return null;
     }
 
     /**
-     * Get type label
+     * Accessor: Mendapatkan label tipe pasien berdasarkan tipe polimorfik.
      */
-    public function getTypeLabelAttribute(): string
+    public function getTypeLabelAttribute()
     {
         return match ($this->catatantable_type) {
             'App\Models\Balita' => 'Balita',
             'App\Models\IbuHamil' => 'Ibu Hamil',
             'App\Models\Lansia' => 'Lansia',
-            default => 'Unknown',
+            default => 'Tidak Diketahui',
         };
     }
 }

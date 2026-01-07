@@ -6,26 +6,28 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
     /**
-     * Run the migrations.
+     * Menjalankan migrasi untuk membuat tabel jadwal_posyandus.
      */
     public function up(): void
     {
         Schema::create('jadwal_posyandus', function (Blueprint $table) {
             $table->id();
-            $table->date('tanggal');
-            $table->time('waktu_mulai');
-            $table->time('waktu_selesai');
-            $table->string('lokasi');
-            $table->string('kegiatan');
-            $table->text('keterangan')->nullable();
-            $table->foreignId('kader_id')->nullable()->constrained('kaders')->onDelete('set null');
-            $table->enum('status', ['Dijadwalkan', 'Berlangsung', 'Selesai', 'Dibatalkan'])->default('Dijadwalkan');
+            $table->date('tanggal');                         // Tanggal pelaksanaan
+            $table->time('waktu_mulai');                     // Waktu mulai kegiatan
+            $table->time('waktu_selesai');                   // Waktu selesai kegiatan
+            $table->string('lokasi');                        // Lokasi pelaksanaan
+            $table->string('kegiatan');                      // Jenis kegiatan yang dilakukan
+            $table->text('keterangan')->nullable();          // Keterangan tambahan
+            $table->foreignId('kader_id')->nullable()        // ID kader penanggung jawab
+                ->constrained('kaders')
+                ->nullOnDelete();
+            $table->string('status')->default('Dijadwalkan'); // Status: Dijadwalkan, Berlangsung, Selesai, Dibatalkan
             $table->timestamps();
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Membatalkan migrasi dan menghapus tabel jadwal_posyandus.
      */
     public function down(): void
     {
